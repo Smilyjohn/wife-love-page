@@ -398,13 +398,15 @@ Your Devoted Husband 💕`;
 
 function typeLetter() {
     const el = document.getElementById('letterContent');
-    el.innerHTML = '';
+    el.textContent = '';
     const words = letterText.split(' ');
     let i = 0;
+    let displayText = '';
     
     function typeWord() {
         if(i < words.length) {
-            el.innerHTML += words[i] + ' ';
+            displayText += words[i] + ' ';
+            el.textContent = displayText;
             createFloatingHeart();
             i++;
             setTimeout(typeWord, 150);
@@ -434,9 +436,10 @@ setInterval(() => {
 
 // Final Celebration with Many Hearts
 function finalCelebration() {
-    const nextEl = document.getElementById(`section${currentSection + 1}`);
-    const prevEl = document.getElementById(`section${currentSection}`);
+    const prevEl = document.getElementById(`section${currentSection + 1}`);
     prevEl.classList.remove('active');
+    currentSection++;
+    const nextEl = document.getElementById(`section${currentSection + 1}`);
     nextEl.classList.add('active');
     
     // Explosion of hearts
