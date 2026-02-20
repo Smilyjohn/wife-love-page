@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever With You 💕</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.section {
+    display: none;
+    animation: fadeIn 1s ease-in;
+    width: 100%;
+    max-width: 700px;
+}
+
+.section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h1 {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+p {
+    font-size: 1.3em;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.quote {
+    font-size: 1.5em;
+    font-style: italic;
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(255,255,255,0.1);
+    border-left: 5px solid #ff6b9d;
+    border-radius: 10px;
+    line-height: 1.8;
+}
+
+button {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff6b9d, #ff1493);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255,107,157,0.4);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.teddy-container {
+    font-size: 120px;
+    margin: 30px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes kiss {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.kissing {
+    animation: kiss 0.6s ease-in-out;
+}
+
+.floating-hearts {
+    position: fixed;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.heart {
+    position: absolute;
+    font-size: 30px;
+    animation: float-up 3s ease-in forwards;
+    opacity: 0.8;
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-500px) translateX(100px) scale(0);
+        opacity: 0;
+    }
+}
+
+.letter-text {
+    background: rgba(255,255,255,0.15);
+    padding: 40px;
+    border-radius: 20px;
+    margin: 20px 0;
+    border: 2px solid rgba(255,255,255,0.3);
+    line-height: 2;
+    font-size: 1.2em;
+    min-height: 300px;
+}
+
+.spotify-embed {
+    margin: 30px 0;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.stars {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+    z-index: 5;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.confession {
+    background: rgba(255,255,255,0.2);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #ff6b9d;
+    margin: 20px 0;
+}
+
+.final-message {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 0;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.ring-emoji {
+    font-size: 100px;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(360deg); }
+}
+
+.video-container {
+    margin: 20px 0;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+}
+
+.spotify-player {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    margin: 30px auto;
+}
+</style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+    <!-- Section 1: Welcome -->
+    <div class="section active" id="section1">
+        <h1>✨ My Beloved Wife ✨</h1>
+        <p>I have something special for you...</p>
+        <button onclick="nextSection()">Begin 💕</button>
+    </div>
+
+    <!-- Section 2: Romantic Quotes -->
+    <div class="section" id="section2">
+        <h2>For You, My Love</h2>
+        
+        <div class="quote">
+            "In your eyes, I found my home, in your heart, I found my love, in your soul, I found my forever."
+        </div>
+
+        <div class="teddy-container">🧸</div>
+        <p>Every moment with you is a blessing...</p>
+
+        <div class="quote">
+            "You are my greatest adventure, my sweetest dream, and my forever truth."
+        </div>
+
+        <button onclick="nextSection()">Continue 💘</button>
+    </div>
+
+    <!-- Section 3: Love Confession -->
+    <div class="section" id="section3">
+        <h2>My Heart Speaks...</h2>
+        
+        <div class="confession">
+            <p>When I first saw you, I knew something magical was about to begin.</p>
+            <p style="margin-top: 20px;">Your smile melts my heart every single day.</p>
+            <p style="margin-top: 20px;">With you, I've learned what true love really means.</p>
+        </div>
+
+        <div class="quote">
+            "I promise to love you through every season of life, in every moment, forever and always."
+        </div>
+
+        <button onclick="nextSection()">Our Song 🎵</button>
+    </div>
+
+    <!-- Section 4: Music & Dedication -->
+    <div class="section" id="section4">
+        <h2>Our Special Song</h2>
+        <p>"I Wanna Be Yours" - Arctic Monkeys 🎶</p>
+        
+        <div class="spotify-embed">
+            <iframe style="border-radius:15px" src="https://open.spotify.com/embed/track/0ryEyJ994SqdJwGJXyS1SF?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <p>This song perfectly captures how I feel about you...</p>
+
+        <button onclick="nextSection()">Read My Letter 💌</button>
+    </div>
+
+    <!-- Section 5: Love Letter -->
+    <div class="section" id="section5">
+        <h2>A Letter From My Heart 💌</h2>
+        
+        <div class="letter-text" id="letterContent"></div>
+
+        <button onclick="nextSection()">One More Thing 💍</button>
+    </div>
+
+    <!-- Section 6: Final Confession -->
+    <div class="section" id="section6">
+        <div class="ring-emoji">💍</div>
+        <h2>Will You Be Mine Forever?</h2>
+        
+        <p style="font-size: 1.4em; margin: 40px 0;">I want to spend the rest of my life with you.</p>
+
+        <div class="quote">
+            "You are my today and all of my tomorrows. I love you beyond measure, my beautiful wife."
+        </div>
+
+        <button onclick="finalCelebration()">YES, Forever! 💕</button>
+    </div>
+
+    <!-- Section 7: Final Celebration -->
+    <div class="section" id="section7">
+        <div style="font-size: 80px; animation: bounce 1s infinite;">💕💕💕</div>
+        <h1>I LOVE YOU!</h1>
+        <p class="final-message">You make me the happiest man alive!</p>
+        <p style="font-size: 1.5em; margin-top: 40px;">Forever yours,<br>Your Loving Husband 💕</p>
+        <button onclick="location.reload()">Start Over 🔄</button>
+    </div>
+</div>
+
+<script>
+let currentSection = 0;
+
+// Particle Background Animation
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+for(let i = 0; i < 50; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: (Math.random() - 0.5) * 0.5,
+        opacity: Math.random() * 0.5 + 0.3
+    });
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    particles.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        
+        if(p.x < 0) p.x = canvas.width;
+        if(p.x > canvas.width) p.x = 0;
+        if(p.y < 0) p.y = canvas.height;
+        if(p.y > canvas.height) p.y = 0;
+        
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Section Navigation
+function nextSection() {
+    const currentEl = document.getElementById(`section${currentSection + 1}`);
+    currentEl.classList.remove('active');
+    currentSection++;
+    const nextEl = document.getElementById(`section${currentSection + 1}`);
+    nextEl.classList.add('active');
+    
+    if(currentSection === 4) {
+        typeLetter();
+    }
+}
+
+// Love Letter Animation
+const letterText = `My Dearest Wife,
+
+From the moment you came into my life, everything changed. You are my greatest blessing, my answered prayer, and my forever love.
+
+Every day with you feels like a beautiful dream. The way you laugh, the warmth of your touch, the kindness in your heart—these are the things that make me fall in love with you all over again.
+
+You are not just my wife; you are my best friend, my confidant, my home. With you, I have discovered what unconditional love truly means.
+
+I promise to stand by your side through every joy and every challenge. I promise to cherish you, protect you, and love you with every fiber of my being.
+
+You are my greatest adventure, and I want to spend forever writing our love story together.
+
+Forever yours,
+Your Devoted Husband 💕`;
+
+function typeLetter() {
+    const el = document.getElementById('letterContent');
+    el.innerHTML = '';
+    const words = letterText.split(' ');
+    let i = 0;
+    
+    function typeWord() {
+        if(i < words.length) {
+            el.innerHTML += words[i] + ' ';
+            createFloatingHeart();
+            i++;
+            setTimeout(typeWord, 150);
+        }
+    }
+    typeWord();
+}
+
+// Floating Hearts Animation
+function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = '❤️';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = window.innerHeight + 'px';
+    document.body.appendChild(heart);
+    
+    setTimeout(() => heart.remove(), 3000);
+}
+
+// Continuous Heart Generation
+setInterval(() => {
+    for(let i = 0; i < 3; i++) {
+        createFloatingHeart();
+    }
+}, 500);
+
+// Final Celebration with Many Hearts
+function finalCelebration() {
+    const nextEl = document.getElementById(`section${currentSection + 1}`);
+    const prevEl = document.getElementById(`section${currentSection}`);
+    prevEl.classList.remove('active');
+    nextEl.classList.add('active');
+    
+    // Explosion of hearts
+    for(let i = 0; i < 50; i++) {
+        setTimeout(() => createFloatingHeart(), i * 100);
+    }
+}
+
+// Teddy Kiss Animation on Click
+document.addEventListener('click', function(e) {
+    if(e.target.closest('.teddy-container')) {
+        const teddy = e.target.closest('.teddy-container');
+        teddy.classList.add('kissing');
+        setTimeout(() => teddy.classList.remove('kissing'), 600);
+        createFloatingHeart();
+    }
+});
+
+// Window Resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
